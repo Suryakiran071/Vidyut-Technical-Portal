@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import logo from '../assets/Vidyut-25-logo.png'; // Your logo
+import logo from '../assets/Vidyut-25-logo2.png'; // Your logo
 
 const Navbar = () => {
   const [user, setUser] = useState(null);

@@ -5,7 +5,7 @@ import { collection, getDocs } from 'firebase/firestore';
 import { FaPlus, FaClipboardList, FaChartBar, FaUsers } from 'react-icons/fa';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import logo from '../assets/Vidyut 25.png';
-import logo2 from '../assets/Vidyut-25-logo.png';
+import logo2 from '../assets/Vidyut-25-logo2.png';
 
 const HeroSection = () => {
   const [eventCount, setEventCount] = useState(0);
