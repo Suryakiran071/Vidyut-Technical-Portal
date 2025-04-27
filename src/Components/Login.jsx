@@ -3,7 +3,7 @@ import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import logo2 from '../assets/Vidyut 25 logo.png'; // Import your logo
+import logo2 from '../assets/Vidyut-25-logo.png'; // Import your logo
 
 const Login = () => {
   const [email, setEmail] = useState("");
