@@ -77,7 +77,7 @@ const HeroSection = () => {
       <div className="p-6 text-center relative z-10">
         {/* Logo */}
         <div className="mb-6 flex justify-center">
-          <img src={logo} alt="Vidyut Logo" className="h-24 invert" />
+          <img src={logo} alt="Vidyut Logo" className="h-20 md:h-24 invert object-contain" />
         </div>
 
         {/* Title and Tagline */}

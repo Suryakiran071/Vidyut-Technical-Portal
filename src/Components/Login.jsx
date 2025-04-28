@@ -1,9 +1,9 @@
 import React, { useState } from "react";
-import { FcGoogle } from "react-icons/fc";
 import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import logo2 from '../assets/Vidyut-25-logo2.png'; // Import your logo
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import paperTexture from '../assets/paper-texture.jpg'; // Paper texture background
+import logo from '../assets/Vidyut-25-logo-black.png';   // Vidyut logo
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -25,33 +25,10 @@ const Login = () => {
       setSuccess(`Welcome back, ${user.email}`);
       setError("");
 
-      // ✨ Immediately redirect to Home page
       navigate("/");
-
     } catch (err) {
       setError("Invalid email or password. Please try again.");
       console.error("Login error:", err);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    const auth = getAuth();
-    const provider = new GoogleAuthProvider();
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      const token = await user.getIdToken();
-      localStorage.setItem("token", token);
-      setSuccess(`Welcome, ${user.displayName}`);
-      setError("");
-
-      // ✨ Immediately redirect to Home page
-      navigate("/");
-
-    } catch (err) {
-      setError("Google login failed. Please try again.");
-      console.error("Google login error", err);
     }
   };
 
@@ -60,100 +37,72 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="flex w-full max-w-screen-xl mx-auto">
-        {/* Left Side with Logo */}
-        <div className="w-1/2 flex flex-col justify-center items-center text-white p-8">
-          <div
-            style={{
-              backgroundImage: `url(${logo2})`,
-              backgroundSize: "50%",
-              backgroundRepeat: "no-repeat",
-              backgroundPosition: "center",
-              position: "absolute",
-              top: 100,
-              left: 0,
-              right: 700,
-              bottom: 0,
-              opacity: 0.5,
-              filter: "invert(1)",
-              zIndex: -1,
-            }}
-          ></div>
-        </div>
+    <div
+      className="min-h-screen flex flex-col items-center justify-start bg-cover bg-center relative p-4"
+      style={{
+        backgroundImage: `url(${paperTexture})`,
+      }}
+    >
+      {/* Vidyut Logo */}
+      <div className="mt-10 mb-4">
+        <img src={logo} alt="Vidyut Logo" className="h-24 mx-auto" />
+      </div>
 
-        {/* Vertical Line */}
-        <div className="w-0.3 px-1 bg-gray-600"></div>
+      {/* Glassy Login Box */}
+      <div className="w-full max-w-sm bg-white bg-opacity-10 backdrop-blur-md p-8 rounded-2xl shadow-2xl">
+        <h2 className="text-3xl font-bold mb-6 text-center text-black">Login</h2>
 
-        {/* Right Side with Login Form */}
-        <div className="ml-40 w-1/3 bg-gray-300 p-8 rounded-2xl shadow-lg">
-          <h2 className="text-2xl font-bold mb-6 text-center text-black">Login</h2>
+        {/* Show error or success messages */}
+        {error && <p className="text-center text-red-500 mb-4">{error}</p>}
+        {success && <p className="text-center text-green-500 mb-4">{success}</p>}
 
-          {/* Show error or success message */}
-          {error && <p className="text-center text-red-500 mb-4">{error}</p>}
-          {success && <p className="text-center text-green-500 mb-4">{success}</p>}
+        {/* Login Form */}
+        <form onSubmit={handleLogin} className="space-y-5">
+          <input
+            type="email"
+            placeholder="Email"
+            className="w-full p-3 rounded bg-gray-100 bg-opacity-70 text-black placeholder-gray-600 outline-none focus:ring-2 focus:ring-blue-500"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
 
-          <form onSubmit={handleLogin} className="space-y-4">
+          <div className="relative">
             <input
-              type="email"
-              placeholder="Email"
-              className="w-full p-3 rounded bg-gray-200 text-black placeholder-gray-600 outline-none focus:ring-2 focus:ring-gray-500"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type={isPasswordVisible ? "text" : "password"}
+              placeholder="Password"
+              className="w-full p-3 rounded bg-gray-100 bg-opacity-70 text-black placeholder-gray-600 outline-none focus:ring-2 focus:ring-blue-500"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
               required
             />
-
-            <div className="relative">
-              <input
-                type={isPasswordVisible ? "text" : "password"}
-                placeholder="Password"
-                className="w-full p-3 rounded bg-gray-200 text-black placeholder-gray-600 outline-none focus:ring-2 focus:ring-gray-500"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-              />
-              {/* Eye icon */}
-              <span
-                className="absolute right-3 top-3 cursor-pointer"
-                onClick={togglePasswordVisibility}
-              >
-                {isPasswordVisible ? (
-                  <FaEyeSlash className="text-gray-600 mt-1" />
-                ) : (
-                  <FaEye className="text-gray-600 mt-1" />
-                )}
-              </span>
-            </div>
-
-            <button
-              type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded transition"
+            <span
+              className="absolute right-3 top-3 cursor-pointer"
+              onClick={togglePasswordVisibility}
             >
-              Login
-            </button>
-          </form>
-
-          <p className="text-center text-gray-800 mt-4 text-sm">
-            Don't have an account?{" "}
-            <Link to="/signup" className="text-blue-800 hover:underline">
-              Click here to sign up
-            </Link>
-          </p>
-
-          <div className="flex items-center my-6">
-            <div className="flex-grow h-px bg-gray-600" />
-            <span className="mx-3 text-gray-400 text-sm">or</span>
-            <div className="flex-grow h-px bg-gray-600" />
+              {isPasswordVisible ? (
+                <FaEyeSlash className="text-gray-600 mt-1" />
+              ) : (
+                <FaEye className="text-gray-600 mt-1" />
+              )}
+            </span>
           </div>
 
           <button
-            onClick={handleGoogleLogin}
-            className="w-full flex items-center justify-center space-x-3 border border-gray-500 py-3 rounded text-black hover:bg-gray-400 transition"
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition transform hover:scale-105"
           >
-            <FcGoogle className="text-xl" />
-            <span>Continue with Google</span>
+            Login
           </button>
-        </div>
+        </form>
+
+        {/* Link to Sign Up */}
+        <p className="text-center text-gray-700 mt-4 text-sm">
+          Don't have an account?{" "}
+          <Link to="/signup" className="text-blue-700 hover:underline font-semibold">
+            Click here to sign up
+          </Link>
+        </p>
       </div>
     </div>
   );
