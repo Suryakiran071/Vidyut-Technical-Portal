@@ -1,16 +1,17 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
-import { FaBars, FaTimes } from 'react-icons/fa'; // for hamburger icons
-import logo from '../assets/Vidyut-25-logo2.png'; // Your logo
+import { FaBars, FaTimes } from 'react-icons/fa';
+import logo from '../assets/Vidyut-25-logo2.png';
 
 const Navbar = () => {
   const [user, setUser] = useState(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false); // 🔥 New mobile menu
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
   const auth = getAuth();
   const dropdownRef = useRef(null);
+  const mobileMenuRef = useRef(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -24,6 +25,7 @@ const Navbar = () => {
     try {
       await signOut(auth);
       setDropdownOpen(false);
+      setMobileMenuOpen(false);
       setUser(null);
       navigate('/login');
     } catch (error) {
@@ -39,11 +41,14 @@ const Navbar = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Close dropdown on outside click
+  // Close dropdown and mobile menu on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setDropdownOpen(false);
+      }
+      if (mobileMenuRef.current && !mobileMenuRef.current.contains(e.target)) {
+        setMobileMenuOpen(false);
       }
     };
     document.addEventListener('mousedown', handleClickOutside);
@@ -103,7 +108,10 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="absolute top-16 left-0 w-full bg-blue-800 text-white flex flex-col items-center space-y-4 py-4 z-40">
+        <div
+          ref={mobileMenuRef}
+          className="absolute top-16 left-0 w-full bg-blue-800 text-white flex flex-col items-center space-y-4 py-4 z-40"
+        >
           <Link to="/" className="hover:text-gray-300" onClick={toggleMobileMenu}>Home</Link>
           {user && (
             <Link to="/add-event" className="hover:text-gray-300" onClick={toggleMobileMenu}>Add Event</Link>
@@ -116,7 +124,6 @@ const Navbar = () => {
             <button
               onClick={(e) => {
                 handleLogout(e);
-                setMobileMenuOpen(false);
               }}
               className="hover:text-gray-300"
             >

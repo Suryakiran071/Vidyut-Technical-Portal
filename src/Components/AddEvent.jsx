@@ -29,6 +29,7 @@ const AddEvent = () => {
 
   const [venue, setVenue] = useState({
     dateOfEvent: '',
+    duration: '',  // Newly added field
     desiredVenue: '',
     chairs: '',
     lights: '',
@@ -171,14 +172,32 @@ const AddEvent = () => {
           <section className="mb-6">
             <h3 className="text-2xl font-semibold mb-4">Venue</h3>
             <hr />
-            <label className="block mb-2">Date of Event</label>
-            <input
-              type="date"
-              name="dateOfEvent"
-              value={venue.dateOfEvent}
-              onChange={handleVenueChange}
-              className="border p-2 w-full mb-4 rounded"
-            />
+            <div className="flex space-x-6 mb-4">
+              <div className="w-1/2">
+                <label className="block mb-2">Date of Event</label>
+                <input
+                  type="date"
+                  name="dateOfEvent"
+                  value={venue.dateOfEvent}
+                  onChange={handleVenueChange}
+                  className="border p-2 w-full mb-4 rounded"
+                />
+              </div>
+              <div className="w-1/2">
+                <label className="block mb-2">Duration</label>
+                <select
+                  name="duration"
+                  value={venue.duration}
+                  onChange={handleVenueChange}
+                  className="border p-2 w-full mb-4 rounded"
+                >
+                  <option value="">Select</option>
+                  <option value="1 day">1 day</option>
+                  <option value="2 day">2 day</option>
+                  <option value="3 day">3 day</option>
+                </select>
+              </div>
+            </div>
 
             <label className="block mb-2">Desired Venue with specifications including the requirements</label>
             <textarea
