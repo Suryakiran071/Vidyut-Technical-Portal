@@ -88,6 +88,49 @@ const AddEvent = () => {
     setAccommodationRequired(e.target.checked);
   };
 
+  const resetForm = () => {
+    setTransportation({
+      workshopName: '',
+      guestFullName: '',
+      noOfPersons: '',
+      arrivalDate: '',
+      arrivalTime: '',
+      arrivalLocation: '',
+      dropDate: '',
+      dropTime: '',
+      dropLocation: ''
+    });
+    setAccommodation({
+      numParticipants: '',
+      accommodationType: '',
+      contactPerson: '',
+      contactNumber: '',
+      contactEmail: '',
+      specialRequirements: ''
+    });
+    setVenue({
+      dateOfEvent: '',
+      duration: '',
+      desiredVenue: '',
+      chairs: '',
+      lights: '',
+      fans: '',
+      projectors: '',
+      speakers: '',
+      plugPoints: '',
+      board: '',
+      strengthOfStudents: ''
+    });
+    setGeneralInfo({
+      eventName: '',
+      executiveName: '',
+      studentCoordinatorName: '',
+      eventType: ''
+    });
+    setTransportationRequired(false);
+    setAccommodationRequired(false);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -104,6 +147,9 @@ const AddEvent = () => {
       const docRef = await addDoc(collection(db, 'events'), eventData);
       console.log('Event Document Written with ID: ', docRef.id);
       alert('Event details saved successfully!'); // Success popup
+
+      // Reset the form fields after successful submission
+      resetForm();
     } catch (e) {
       console.error('Error adding document: ', e);
       alert('Error saving event details. Please try again.'); // Error popup

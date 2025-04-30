@@ -3,6 +3,7 @@ import { db } from '../firebase';
 import { collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
 import { FaSearch, FaPlus } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const ViewEvents = () => {
   const [events, setEvents] = useState([]);
@@ -14,6 +15,8 @@ const ViewEvents = () => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [editMode, setEditMode] = useState(false);
   const [editableEvent, setEditableEvent] = useState(null);
+
+  const navigate = useNavigate(); // For redirection after deleting event
 
   // 🛠️ Helper function to format camelCase -> Normal Case
   const formatFieldName = (fieldName) => {
@@ -31,7 +34,7 @@ const ViewEvents = () => {
         ...doc.data()
       }));
       setEvents(eventsList);
-      setFilteredEvents(eventsList);
+      setFilteredEvents(eventsList); // Initial list of events
     };
     fetchEvents();
   }, []);
@@ -50,14 +53,17 @@ const ViewEvents = () => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // 🛠️ Function to check if accommodation is required
   const isAccommodationRequired = (accommodation) => {
     return Object.values(accommodation).some(value => value);
   };
 
+  // 🛠️ Function to check if transportation is required
   const isTransportationRequired = (transportation) => {
     return Object.values(transportation).some(value => value);
   };
 
+  // Search event handler
   const handleSearchChange = (e) => {
     setSearchQuery(e.target.value);
     const lowercasedQuery = e.target.value.toLowerCase();
@@ -67,6 +73,7 @@ const ViewEvents = () => {
     setFilteredEvents(filtered);
   };
 
+  // Event type filter handler
   const handleEventTypeChange = (e) => {
     setEventType(e.target.value);
     if (e.target.value === '') {
@@ -112,7 +119,6 @@ const ViewEvents = () => {
       alert('Event updated successfully!');
       setSelectedEvent(editableEvent);
       setEditMode(false);
-      window.location.reload(); // Refresh to fetch updated list
     } catch (error) {
       console.error('Error updating event:', error);
       alert('Failed to update event.');
@@ -127,7 +133,7 @@ const ViewEvents = () => {
       await deleteDoc(eventRef);
       alert('Event deleted successfully!');
       closePopup();
-      window.location.reload();
+      navigate('/'); // Redirect to home page after deletion
     } catch (error) {
       console.error('Error deleting event:', error);
       alert('Failed to delete event.');
@@ -136,8 +142,36 @@ const ViewEvents = () => {
 
   return (
     <div className="p-4 sm:p-6">
-      {/* Top bar for search and filter (same as before) */}
+      {/* Top bar for search and filter */}
       <h2 className="text-4xl font-bold text-center mb-6">View Event</h2>
+
+      {/* Search bar and filter */}
+      <div className="flex flex-col sm:flex-row justify-between items-center mb-4 space-y-4 sm:space-y-0 sm:space-x-4">
+        <input
+          type="text"
+          placeholder="Search by Event Name"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          className="border p-2 rounded w-full max-w-md"
+        />
+        <select
+          value={eventType}
+          onChange={handleEventTypeChange}
+          className="border p-2 rounded w-40 sm:w-48"
+        >
+          <option value="">Filter by Type</option>
+          <option value="Workshop">Workshop</option>
+          <option value="Competition">Competition</option>
+        </select>
+        {user && (
+          <a href="/add-event">
+            <button className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700">
+              + Add Event
+            </button>
+          </a>
+        )}
+      </div>
+
       {/* Events Table */}
       <div className="shadow-lg p-3 rounded-lg overflow-x-auto">
         <table className="min-w-full table-auto border-collapse">
@@ -222,7 +256,6 @@ const ViewEvents = () => {
             </div>
 
             {/* Event Full Details */}
-            {/* General Information */}
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-blue-600 mb-2">General Information</h3>
               <p><strong>Executive Name:</strong> {editMode ? <input className="border p-1" value={editableEvent.generalInfo.executiveName} onChange={(e) => handleEditChange(e, 'generalInfo', 'executiveName')} /> : editableEvent.generalInfo.executiveName}</p>
@@ -234,7 +267,7 @@ const ViewEvents = () => {
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-blue-600 mb-2">Venue Details</h3>
               {Object.keys(editableEvent.venue).map((field) => (
-                field !== 'workshopName' && (  // Skip the 'workshopName' field
+                field !== 'workshopName' && (
                   <p key={field}>
                     <strong>{formatFieldName(field)}:</strong>{' '}
                     {editMode
