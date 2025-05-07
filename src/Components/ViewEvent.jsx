@@ -263,7 +263,7 @@ const ViewEvents = () => {
               <p><strong>Event Type:</strong> {editMode ? <input className="border p-1" value={editableEvent.generalInfo.eventType} onChange={(e) => handleEditChange(e, 'generalInfo', 'eventType')} /> : editableEvent.generalInfo.eventType}</p>
             </div>
 
-            {/* Venue Information */}
+            {/* Venue Information Section */}
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-blue-600 mb-2">Venue Details</h3>
               {Object.keys(editableEvent.venue).map((field) => (
@@ -278,20 +278,76 @@ const ViewEvents = () => {
               ))}
             </div>
 
-            {/* Transportation Information */}
+            {/* Transportation Information Section */}
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-blue-600 mb-2">Transportation Details</h3>
-              {Object.keys(editableEvent.transportation).map((field) => (
-                <p key={field}>
-                  <strong>{formatFieldName(field)}:</strong>{' '}
-                  {editMode
-                    ? <input className="border p-1" value={editableEvent.transportation[field]} onChange={(e) => handleEditChange(e, 'transportation', field)} />
-                    : editableEvent.transportation[field]}
-                </p>
-              ))}
+              <div className="flex space-x-4">
+                <div className="w-1/2">
+                  <label>Arrival Date</label>
+                  {editMode 
+                    ? <input type="date" value={editableEvent.transportation.arrivalDate} onChange={(e) => handleEditChange(e, 'transportation', 'arrivalDate')} className="border p-1 w-full" />
+                    : <span>{editableEvent.transportation.arrivalDate}</span>
+                  }
+                </div>
+                <div className="w-1/2">
+                  <label>Arrival Time</label>
+                  {editMode 
+                    ? <input type="time" value={editableEvent.transportation.arrivalTime} onChange={(e) => handleEditChange(e, 'transportation', 'arrivalTime')} className="border p-1 w-full" />
+                    : <span>{editableEvent.transportation.arrivalTime}</span>
+                  }
+                </div>
+              </div>
+
+              <div className="flex space-x-4">
+                <div className="w-1/2">
+                  <label>Arrival Location</label>
+                  {editMode 
+                    ? <select value={editableEvent.transportation.arrivalLocation} onChange={(e) => handleEditChange(e, 'transportation', 'arrivalLocation')} className="border p-1 w-full">
+                        <option value="Trivandrum airport">Trivandrum airport</option>
+                        <option value="Cochin airport">Cochin airport</option>
+                        <option value="Karunagapally railway station">Karunagapally railway station</option>
+                        <option value="Kayamkulam railway station">Kayamkulam railway station</option>
+                        <option value="Karunagappally Bus Stand">Karunagappally Bus Stand</option>
+                        <option value="Kayamkulam Bus Stand">Kayamkulam Bus Stand</option>
+                      </select>
+                    : <span>{editableEvent.transportation.arrivalLocation}</span>
+                  }
+                </div>
+                <div className="w-1/2">
+                  <label>Drop Date</label>
+                  {editMode 
+                    ? <input type="date" value={editableEvent.transportation.dropDate} onChange={(e) => handleEditChange(e, 'transportation', 'dropDate')} className="border p-1 w-full" />
+                    : <span>{editableEvent.transportation.dropDate}</span>
+                  }
+                </div>
+              </div>
+
+              <div className="flex space-x-4">
+                <div className="w-1/2">
+                  <label>Drop Location</label>
+                  {editMode 
+                    ? <select value={editableEvent.transportation.dropLocation} onChange={(e) => handleEditChange(e, 'transportation', 'dropLocation')} className="border p-1 w-full">
+                        <option value="Trivandrum airport">Trivandrum airport</option>
+                        <option value="Cochin airport">Cochin airport</option>
+                        <option value="Karunagapally railway station">Karunagapally railway station</option>
+                        <option value="Kayamkulam railway station">Kayamkulam railway station</option>
+                        <option value="Karunagappally Bus Stand">Karunagappally Bus Stand</option>
+                        <option value="Kayamkulam Bus Stand">Kayamkulam Bus Stand</option>
+                      </select>
+                    : <span>{editableEvent.transportation.dropLocation}</span>
+                  }
+                </div>
+                <div className="w-1/2">
+                  <label>Drop Time</label>
+                  {editMode 
+                    ? <input type="time" value={editableEvent.transportation.dropTime} onChange={(e) => handleEditChange(e, 'transportation', 'dropTime')} className="border p-1 w-full" />
+                    : <span>{editableEvent.transportation.dropTime}</span>
+                  }
+                </div>
+              </div>
             </div>
 
-            {/* Accommodation Information */}
+            {/* Accommodation Information Section */}
             <div className="mb-4">
               <h3 className="text-lg font-semibold text-blue-600 mb-2">Accommodation Details</h3>
               {Object.keys(editableEvent.accommodation).map((field) => (

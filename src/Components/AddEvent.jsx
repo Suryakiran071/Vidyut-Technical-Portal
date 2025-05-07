@@ -425,6 +425,8 @@ const AddEvent = () => {
                 <option value="Cochin airport">Cochin airport</option>
                 <option value="Karunagapally railway station">Karunagapally railway station</option>
                 <option value="Kayamkulam railway station">Kayamkulam railway station</option>
+                <option value="Karunagappally Bus Stand">Karunagappally Bus Stand</option>
+                <option value="Kayamkulam Bus Stand">Kayamkulam Bus Stand</option>
               </select>
 
               {/* Drop Date and Drop Time */}
@@ -465,6 +467,8 @@ const AddEvent = () => {
                 <option value="Cochin airport">Cochin airport</option>
                 <option value="Karunagapally railway station">Karunagapally railway station</option>
                 <option value="Kayamkulam railway station">Kayamkulam railway station</option>
+                <option value="Karunagappally Bus Stand">Karunagappally Bus Stand</option>
+                <option value="Kayamkulam Bus Stand">Kayamkulam Bus Stand</option>
               </select>
             </section>
           )}
